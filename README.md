@@ -3,12 +3,12 @@
 
 Transtitulator, translate audio, videos, and automatically write an susbtitles file, .srt, do this with google speech recognition, and google-translate
 
-Usage: Transtitulator , </path-to-video/> <language-from> <language-to>
+Usage: Transtitulator , "/path-to-video/" "language-from" "language-to"
 Or browse to your video, and select the lenguages
 
 Transtitulator-gtk have a zenity progress bar. Caution this script depends of been with Transtitulator, in the same folder, if you rename the script, must modify the command line.
 
-In <language-from>, its also available "auto" case you dont know the language of the audio. The languages available are down below.
+In "language-from", its also available "auto" case you dont know the language of the audio. The languages available are down below.
 
 Press (Ctrl+Z), to pause the process, or press (Ctrl+C) to cancel.
 When is paused you can resume the translations, from where stay
