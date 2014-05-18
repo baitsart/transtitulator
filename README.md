@@ -22,7 +22,7 @@ To use in nautilus-script. Replace VIDEO="$1", by : VIDEO="$NAUTILUS_SCRIPT_SELE
 The split audio, time duration, are define in: CHUNK_LEN="8"; to 8 seconds, you can modify, for a better use.
 
 Install dependencies:
-sudo apt-get install ffmpeg curl wget mplayer gawk zenity
+sudo apt-get install ffmpeg curl mplayer gawk zenity
 
 Possible fails: 1, The function when process the audio, it's cut in 8 seconds fragments, and this probably cut some words. 2, Is better to google voice recongition, use clean audio, without music, or other voices, and how ever, can give errors on the convertion, also google translate, but is real that google have got fast evolu in the sources.
 
