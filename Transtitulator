@@ -58,15 +58,16 @@ reco_tanslate()
 {
 audio=$(ls $HOME/.transtitulator/."$name_of_file"_"$FROM"-"$TO".audio-split  | sort -n | head -n1)
 
-/usr/bin/time -p -o /tmp/time_take curl -s -X POST --data-binary @$HOME/.transtitulator/."$name_of_file"_"$FROM"-"$TO".audio-split/"$audio" --header 'Content-Type: audio/x-flac; rate=16000;' 'https://www.google.com/speech-api/v2/recognize?output=json&lang='$FROM'&key=AIzaSyBOti4mM-6x9WDnZIjIeyEU21OpBXqWBgw' | grep "~"
+curl -s -X POST --data-binary @$HOME/.transtitulator/."$name_of_file"_"$FROM"-"$TO".audio-split/"$audio" --header 'Content-Type: audio/x-flac; rate=16000;' 'https://www.google.com/speech-api/v2/recognize?output=json&lang='$FROM'&key=AIzaSyBOti4mM-6x9WDnZIjIeyEU21OpBXqWBgw' > /tmp/found_if_fail
 
-laps=$(cat /tmp/time_take | tail -n3 | head -n1 | cut -d ' ' -f2 | cut -d '.' -f1 )
-if (($laps >= 150)); then
+if cat /tmp/found_if_fail | grep "Your client does not have permission to get URL" ; then
+
 notify-send "There was an error when connecting to voice recognition servers"
 echo "
 There was an error when connecting to voice recognition servers"
 exit 1
 fi
+rm /tmp/found_if_fail
 traduction
 }
 
