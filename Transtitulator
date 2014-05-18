@@ -16,7 +16,11 @@ time_encoded=$(echo "$audio_file_start,000 --> $audio_file_end,000" )
 number_line=$(echo "$audio_file" | cut -d '~' -f1) 
 curr_perc=$(echo $number_line / $total \* 100 | bc -l | head -c4 )
 
-wget -q -U "Mozilla/5.0" --post-file $HOME/.transtitulator/."$name_of_file"_"$FROM"-"$TO".audio-split/"$audio_file" --header="Content-Type: audio/x-flac; rate=16000" -O - "https://www.google.com/speech-api/v1/recognize?xjerr=1&client=chromium&lang=$FROM" |cut -d\" -f12 2>&1 > $HOME/.transtitulator/."$name_of_file"_"$FROM"-"$TO".temp_line 
+JSON=`curl -s -X POST \
+--data-binary @$HOME/.transtitulator/."$name_of_file"_"$FROM"-"$TO".audio-split/"$audio_file"  \
+--header 'Content-Type: audio/x-flac; rate=16000;' \
+'https://www.google.com/speech-api/v2/recognize?output=json&lang='$FROM'&key=AIzaSyBOti4mM-6x9WDnZIjIeyEU21OpBXqWBgw' | cut -d\" -f8 ` 
+echo "$JSON" > $HOME/.transtitulator/."$name_of_file"_"$FROM"-"$TO".temp_line 
 
 sed -i '/^$/d' $HOME/.transtitulator/."$name_of_file"_"$FROM"-"$TO".temp_line
 echo -ne "`cat $HOME/.transtitulator/."$name_of_file"_"$FROM"-"$TO".temp_line | while read line; do the_text_encoded=$(echo $line); translate=$(curl -s -A "Mozilla/5.0" "http://translate.google.com/translate_a/t?client=t&text=$(python -c "import urllib; print urllib.quote('''$the_text_encoded''')")&hl=$FROM&sl=ese&tl=$TO&ie=UTF-8&oe=UTF-8&multires=1&prev=btn&ssel=0&tsel=0&sc=1" | sed 's/\[\[\["\([^"]*\).*/\1/'| sed 's/  / /g' | sed 's/'"'"'/ /g'| tail -n 1 ); sed -i $HOME/.transtitulator/."$name_of_file"_"$FROM"-"$TO".temp_line -e s/"$the_text_encoded"/"$translate"/g $HOME/.transtitulator/."$name_of_file"_"$FROM"-"$TO".temp_line 2>/dev/null; done; echo "Progress: 0$curr_perc % Audio translation $number_line /$total"` \\r"
@@ -53,7 +57,9 @@ exit 1
 reco_tanslate()
 {
 audio=$(ls $HOME/.transtitulator/."$name_of_file"_"$FROM"-"$TO".audio-split  | sort -n | head -n1)
-/usr/bin/time -p -o /tmp/time_take wget -q -U "Mozilla/5.0" --post-file $HOME/.transtitulator/."$name_of_file"_"$FROM"-"$TO".audio-split/"$audio" --header="Content-Type: audio/x-flac; rate=16000" -O - "https://www.google.com/speech-api/v1/recognize?xjerr=1&client=chromium&lang=$FROM"
+
+/usr/bin/time -p -o /tmp/time_take curl -s -X POST --data-binary @$HOME/.transtitulator/."$name_of_file"_"$FROM"-"$TO".audio-split/"$audio" --header 'Content-Type: audio/x-flac; rate=16000;' 'https://www.google.com/speech-api/v2/recognize?output=json&lang='$FROM'&key=AIzaSyBOti4mM-6x9WDnZIjIeyEU21OpBXqWBgw' | grep "~"
+
 laps=$(cat /tmp/time_take | tail -n3 | head -n1 | cut -d ' ' -f2 | cut -d '.' -f1 )
 if (($laps >= 150)); then
 notify-send "There was an error when connecting to voice recognition servers"
