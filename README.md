@@ -19,7 +19,7 @@ You can change the language interface by execute: /install-translation.sh
 
 To use in nautilus-script. Replace VIDEO="$1", by : VIDEO="$NAUTILUS_SCRIPT_SELECTED_FILE_PATHS", and replace $VIDEO by $@, in Transtitulator-gtk. And copy to $HOME/.gnome2/nautilus-scripts , or  $HOME/.local/share/nautilus/scripts
 
-The split audio, time duration, are define in: CHUNK_LEN="8"; to 8 seconds, you can modify, for a better use.
+The split audio, time duration, are define in: CHUNK_LEN="4"; to 4 seconds, you can modify, for a better use.
 
 Install dependencies:
 sudo apt-get install ffmpeg curl mplayer gawk zenity
