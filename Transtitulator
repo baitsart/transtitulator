@@ -265,7 +265,7 @@ Press (Ctrl+Z), to pause the process, or press (Ctrl+C) to cancel.
 "
 name_of_file=$(echo "$filename" | tr '/' '\n' | tail -n1 )
 name=$(echo "$name_of_file" | sed 's/.mp4//g;s/.MP4//g;s/.mpeg//g;s/.MPEG//g;s/.mpg//g;s/.MPG//g;s/.dv//g;s/.DV//g;s/.flv//g;s/.FLV//g;s/.avi//g;s/.AVI//g;s/.mp3//g;s/.MP3//g;s/.ogg//g;s/.OGG//g;s/.ogv//g;s/.OGV//g;s/.mp2//g;s/.MP2//g;s/.flac//g;s/.FLAC//g;s/.3gp//g;s/.3GP//g;s/.webm//g;s/.WEBM//g;s/.4gp//g;s/.4GP//g;s/.wav//g;s/.WAV//g;s/.mkv//g;s/.MKV//g;s/.m4g//g;s/.M4G//g')
-CHUNK_LEN="8"
+CHUNK_LEN="4"
 number='1'
 audio_time='0'
 if [ -d $HOME/.transtitulator/."$name_of_file"_"$FROM"-"$TO".audio-split ]; then
